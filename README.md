@@ -41,8 +41,8 @@
 ---
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=holic512&show_icons=true&bg_color=ffffff&title_color=000000&text_color=333333&icon_color=000000&border_color=000000&border_radius=0&hide_border=false" alt="GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=holic512&layout=compact&bg_color=ffffff&title_color=000000&text_color=333333&border_color=000000&border_radius=0&hide_border=false" alt="Top Languages" />
+  <img src="https://raw.githubusercontent.com/holic512/holic512/main/assets/github-stats.svg" alt="GitHub Stats" />
+  <img src="https://raw.githubusercontent.com/holic512/holic512/main/assets/top-langs.svg" alt="Top Languages" />
 </p>
 
 <p align="center">

@@ -1,0 +1,33 @@
+name: Update GitHub Stats
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-stats.yml'
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download stats SVGs
+        run: |
+          curl -sL "https://github-readme-stats.vercel.app/api?username=holic512&show_icons=true&bg_color=ffffff&title_color=000000&text_color=333333&icon_color=000000&border_color=000000&border_radius=0&hide_border=false" -o assets/github-stats.svg
+          curl -sL "https://github-readme-stats.vercel.app/api/top-langs/?username=holic512&layout=compact&bg_color=ffffff&title_color=000000&text_color=333333&border_color=000000&border_radius=0&hide_border=false" -o assets/top-langs.svg
+
+      - name: Commit and push
+        run: |
+          git add assets/github-stats.svg assets/top-langs.svg
+          git diff --staged --quiet || \
+            (git -c user.name="github-actions[bot]" \
+                 -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+                 commit -m "chore: update stats SVGs" && \
+             git push)
