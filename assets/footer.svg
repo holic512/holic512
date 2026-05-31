@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="100%" height="auto">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4158D0"/>
+      <stop offset="50%" stop-color="#C850C0"/>
+      <stop offset="100%" stop-color="#FFCC70"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="200" fill="url(#g)"/>
+  <path d="M0,40 Q200,0 400,40 T800,40 L800,0 L0,0 Z" fill="#fff" opacity="0.15"/>
+  <path d="M0,20 Q200,-20 400,20 T800,20 L800,0 L0,0 Z" fill="#fff" opacity="0.08"/>
+  <text x="400" y="115" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="72" font-weight="bold" fill="#fff">THE END!</text>
+  <text x="400" y="150" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="22" fill="rgba(255,255,255,0.9)">Hope your program is bug-free!</text>
+</svg>

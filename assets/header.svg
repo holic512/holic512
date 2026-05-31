@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="100%" height="auto">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4158D0"/>
+      <stop offset="50%" stop-color="#C850C0"/>
+      <stop offset="100%" stop-color="#FFCC70"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="200" fill="url(#g)"/>
+  <path d="M0,160 Q200,200 400,160 T800,160 L800,200 L0,200 Z" fill="#fff" opacity="0.15"/>
+  <path d="M0,180 Q200,220 400,180 T800,180 L800,200 L0,200 Z" fill="#fff" opacity="0.08"/>
+  <text x="400" y="85" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="72" font-weight="bold" fill="#fff">HI THERE!</text>
+  <text x="400" y="120" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="22" fill="rgba(255,255,255,0.9)">I am holic512!</text>
+</svg>
