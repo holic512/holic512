@@ -41,8 +41,8 @@
 ---
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/holic512/holic512/main/assets/github-stats.svg" alt="GitHub Stats" />
-  <img src="https://raw.githubusercontent.com/holic512/holic512/main/assets/top-langs.svg" alt="Top Languages" />
+  <img width="340" height="200" src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=holic512&amp;theme=github" alt="GitHub Stats" />
+  <img width="340" height="200" src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=holic512&amp;theme=github" alt="Top Languages" />
 </p>
 
 <p align="center">
