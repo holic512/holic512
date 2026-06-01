@@ -1,3 +1,12 @@
+# @file update-stats
+# @project holic512 profile README
+# @module GitHub Actions / README assets
+# @description Updates local SVG cards used by the profile README.
+# @logic 1. Download verified GitHub profile summary cards; 2. Commit changed SVG assets back to main.
+# @dependencies API: github-profile-summary-cards.vercel.app, Assets: assets/*.svg
+# @index_tags GitHub Actions, README, SVG stats, profile cards, automation
+# @author holic512
+
 name: Update GitHub Stats
 
 on:
@@ -20,12 +29,14 @@ jobs:
 
       - name: Download stats SVGs
         run: |
-          curl -sL "https://github-readme-stats.vercel.app/api?username=holic512&show_icons=true&bg_color=ffffff&title_color=000000&text_color=333333&icon_color=000000&border_color=000000&border_radius=0&hide_border=false" -o assets/github-stats.svg
-          curl -sL "https://github-readme-stats.vercel.app/api/top-langs/?username=holic512&layout=compact&bg_color=ffffff&title_color=000000&text_color=333333&border_color=000000&border_radius=0&hide_border=false" -o assets/top-langs.svg
+          curl -fsSL "https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=holic512&theme=github" -o assets/profile-details.svg
+          curl -fsSL "https://github-profile-summary-cards.vercel.app/api/cards/stats?username=holic512&theme=github" -o assets/github-stats.svg
+          curl -fsSL "https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=holic512&theme=github" -o assets/top-langs.svg
+          curl -fsSL "https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=holic512&theme=github" -o assets/commit-langs.svg
 
       - name: Commit and push
         run: |
-          git add assets/github-stats.svg assets/top-langs.svg
+          git add assets/profile-details.svg assets/github-stats.svg assets/top-langs.svg assets/commit-langs.svg
           git diff --staged --quiet || \
             (git -c user.name="github-actions[bot]" \
                  -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
