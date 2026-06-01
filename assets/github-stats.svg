@@ -1,18 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="180" viewBox="0 0 400 180">
-  <rect width="400" height="180" fill="#ffffff"/>
-  <rect x="0" y="0" width="400" height="180" fill="none" stroke="#000000" stroke-width="0.5"/>
-  <line x1="20" y1="40" x2="380" y2="40" stroke="#000000" stroke-width="0.25" opacity="0.3"/>
-  <line x1="20" y1="70" x2="380" y2="70" stroke="#000000" stroke-width="0.25" opacity="0.3"/>
-  <line x1="20" y1="100" x2="380" y2="100" stroke="#000000" stroke-width="0.25" opacity="0.3"/>
-  <line x1="20" y1="130" x2="380" y2="130" stroke="#000000" stroke-width="0.25" opacity="0.3"/>
-  <rect x="30" y="22" width="16" height="16" fill="#000000" opacity="0.08"/>
-  <text x="60" y="35" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#000000">Loading GitHub Stats…</text>
-  <rect x="30" y="52" width="8" height="8" rx="1" fill="#000000" opacity="0.15"/>
-  <rect x="46" y="52" width="120" height="8" rx="1" fill="#000000" opacity="0.08"/>
-  <rect x="30" y="82" width="8" height="8" rx="1" fill="#000000" opacity="0.15"/>
-  <rect x="46" y="82" width="90" height="8" rx="1" fill="#000000" opacity="0.08"/>
-  <rect x="30" y="112" width="8" height="8" rx="1" fill="#000000" opacity="0.15"/>
-  <rect x="46" y="112" width="150" height="8" rx="1" fill="#000000" opacity="0.08"/>
-  <rect x="30" y="142" width="8" height="8" rx="1" fill="#000000" opacity="0.15"/>
-  <rect x="46" y="142" width="80" height="8" rx="1" fill="#000000" opacity="0.08"/>
-</svg>
+The deployment is currently unavailable
+
+DEPLOYMENT_PAUSED
+
+sfo1::7qlkk-1780287277292-0e3607d1a2c3
