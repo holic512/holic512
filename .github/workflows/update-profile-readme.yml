@@ -1,0 +1,45 @@
+# @file update-profile-readme
+# @project holic512 GitHub profile
+# @module Profile README / GitHub Actions
+# @description 定时运行 README 主视觉同步脚本，并在 SVG 内容变化时提交回 main 分支。
+# @logic 1. schedule 与 workflow_dispatch 触发；2. 使用 GITHUB_TOKEN 读取 GitHub 数据；3. 仅当 assets/profile-readme.svg 变化时提交并推送。
+# @dependencies Script: scripts/update_profile_readme.py, Permission: contents: write, Action: actions/checkout@v5
+# @index_tags GitHub Actions, schedule, README 自动更新, SVG 同步
+# @author holic512
+
+name: Update profile README
+
+on:
+  schedule:
+    - cron: "17 16 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-profile-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Update profile visual
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROFILE_USERNAME: holic512
+          PROFILE_VIEWS_URL: https://komarev.com/ghpvc/?username=holic512&abbreviated=true&color=000000&style=flat-square
+        run: python3 scripts/update_profile_readme.py
+
+      - name: Commit updated profile visual
+        run: |
+          if git diff --quiet -- assets/profile-readme.svg; then
+            echo "No profile visual changes."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/profile-readme.svg
+          git commit -m "chore: update profile readme visual"
+          git push
