@@ -1,10 +1,10 @@
 # @file update-profile-readme
 # @project holic512 GitHub profile
 # @module Profile README / GitHub Actions
-# @description 定时运行 README 主视觉同步脚本，并在 SVG 内容变化时提交回 main 分支。
-# @logic 1. schedule 与 workflow_dispatch 触发；2. 使用 GITHUB_TOKEN 读取 GitHub 数据；3. 仅当 assets/profile-readme.svg 变化时提交并推送。
-# @dependencies Script: scripts/update_profile_readme.py, Permission: contents: write, Action: actions/checkout@v5
-# @index_tags GitHub Actions, schedule, README 自动更新, SVG 同步
+# @description 定时更新 README 数据源，并把 HTML 模板渲染为首页 PNG 主视觉。
+# @logic 1. schedule 与 workflow_dispatch 触发；2. 使用 GITHUB_TOKEN 更新 JSON；3. 用 Playwright 将 HTML 截图为 PNG；4. 提交变化文件。
+# @dependencies Script: scripts/update_profile_readme.py, Script: scripts/render_profile_readme.mjs, Permission: contents: write, Action: actions/checkout@v5, Action: actions/setup-node@v6
+# @index_tags GitHub Actions, schedule, README 自动更新, HTML 转图片, JSON 数据源
 # @author holic512
 
 name: Update profile README
@@ -24,22 +24,37 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v5
 
-      - name: Update profile visual
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install render dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Update profile data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PROFILE_USERNAME: holic512
           PROFILE_VIEWS_URL: https://komarev.com/ghpvc/?username=holic512&abbreviated=true&color=000000&style=flat-square
         run: python3 scripts/update_profile_readme.py
 
-      - name: Commit updated profile visual
+      - name: Render profile visual
+        run: npm run render:readme
+
+      - name: Commit updated profile assets
         run: |
-          if git diff --quiet -- assets/profile-readme.svg; then
-            echo "No profile visual changes."
+          if git diff --quiet -- data/profile-readme.json assets/profile-readme.png; then
+            echo "No profile asset changes."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/profile-readme.svg
-          git commit -m "chore: update profile readme visual"
+          git add data/profile-readme.json assets/profile-readme.png
+          git commit -m "chore: update profile readme assets"
           git push

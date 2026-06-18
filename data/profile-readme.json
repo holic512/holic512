@@ -1,0 +1,143 @@
+{
+  "profile": {
+    "username": "holic512",
+    "displayName": "holic512",
+    "subtitle": "Software engineering, full-stack development, and practical automation.",
+    "tagline": "Clean code. Clear systems. Useful tools.",
+    "contacts": [
+      {
+        "label": "GitHub",
+        "value": "@holic512"
+      },
+      {
+        "label": "Bilibili",
+        "value": "holic512"
+      },
+      {
+        "label": "QQ",
+        "value": "2423580694"
+      }
+    ]
+  },
+  "about": [
+    "I use this profile to track programming practice, project experiments, and engineering notes.",
+    "My current public stack centers on web development, backend fundamentals, automation scripts, and course/project implementations."
+  ],
+  "focus": [
+    {
+      "label": "Focus",
+      "value": "Full-stack development, backend services, automation, and software engineering practice."
+    },
+    {
+      "label": "Working style",
+      "value": "Readable structure, explicit naming, small iterations, and verifiable results."
+    },
+    {
+      "label": "Profile pipeline",
+      "value": "JSON data, HTML layout, Playwright screenshot, README image."
+    }
+  ],
+  "techStack": [
+    {
+      "label": "Languages",
+      "icon": "</>",
+      "items": [
+        "Python",
+        "Java",
+        "C",
+        "C++",
+        "C#",
+        "MATLAB"
+      ]
+    },
+    {
+      "label": "Frontend",
+      "icon": "UI",
+      "items": [
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "TypeScript",
+        "Vue",
+        "Markdown"
+      ]
+    },
+    {
+      "label": "Tools & Platform",
+      "icon": "CLI",
+      "items": [
+        "Git",
+        "GitHub Actions",
+        "Linux",
+        "MySQL",
+        "Playwright"
+      ]
+    }
+  ],
+  "notes": [
+    "Keep code paths searchable and responsibilities explicit.",
+    "Prefer small, reviewable changes over large rewrites.",
+    "Verify behavior with real commands, screenshots, or generated artifacts.",
+    "Treat README, workflows, and assets as part of the product surface."
+  ],
+  "dynamic": {
+    "profileViews": "655",
+    "updatedAt": null,
+    "github": {
+      "year": 2026,
+      "contributions": 283,
+      "calendarDays": [],
+      "publicRepos": 10,
+      "stars": 54,
+      "yearCommits": 277,
+      "pullRequests": 1,
+      "issues": 2,
+      "contributedTo": 10,
+      "joinedYears": 3,
+      "repoLanguages": [
+        {
+          "name": "Vue",
+          "value": 4
+        },
+        {
+          "name": "TypeScript",
+          "value": 3
+        },
+        {
+          "name": "Java",
+          "value": 2
+        },
+        {
+          "name": "JavaScript",
+          "value": 1
+        },
+        {
+          "name": "Python",
+          "value": 0
+        }
+      ],
+      "commitLanguages": [
+        {
+          "name": "Vue",
+          "value": 4
+        },
+        {
+          "name": "TypeScript",
+          "value": 3
+        },
+        {
+          "name": "JavaScript",
+          "value": 2
+        },
+        {
+          "name": "Java",
+          "value": 1
+        },
+        {
+          "name": "Python",
+          "value": 0
+        }
+      ]
+    }
+  }
+}

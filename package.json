@@ -1,0 +1,12 @@
+{
+  "name": "holic512-profile-readme",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render:readme": "node scripts/render_profile_readme.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.58.2"
+  }
+}

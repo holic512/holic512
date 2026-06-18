@@ -1,0 +1,605 @@
+<!--
+  @file profile-readme
+  @project holic512 GitHub profile
+  @module Profile README / HTML 视觉模板
+  @description 使用 JSON 数据绘制 GitHub Profile README 首页主视觉。
+  @logic 1. 注入 profile-readme.json；2. 渲染统计、技术栈、语言分布与贡献曲线；3. 由 Playwright 截图生成 PNG。
+  @dependencies Data: data/profile-readme.json, Runtime: scripts/render_profile_readme.mjs
+  @index_tags GitHub README, HTML 模板, Playwright 截图, Profile 首页
+  @author holic512
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>holic512 GitHub profile overview</title>
+    <style>
+      :root {
+        --ink: #151515;
+        --muted: #5b5b55;
+        --line: #d8d2c5;
+        --paper: #fbfaf4;
+        --panel: #ffffff;
+        --mint: #1f8a70;
+        --amber: #c57c21;
+        --coral: #c44d3f;
+        --steel: #426a75;
+        --shadow: 0 18px 45px rgba(41, 32, 16, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      .profile-canvas {
+        width: 1080px;
+        height: 1740px;
+        padding: 38px;
+        overflow: hidden;
+        background:
+          linear-gradient(90deg, rgba(21, 21, 21, 0.045) 1px, transparent 1px) 0 0 / 36px 36px,
+          linear-gradient(rgba(21, 21, 21, 0.035) 1px, transparent 1px) 0 0 / 36px 36px,
+          radial-gradient(circle at 85% 8%, rgba(31, 138, 112, 0.16), transparent 28%),
+          var(--paper);
+      }
+
+      .masthead {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 24px;
+        margin-bottom: 38px;
+      }
+
+      .rule {
+        height: 1px;
+        background: var(--ink);
+        opacity: 0.22;
+      }
+
+      .monogram {
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 10px;
+        text-indent: 10px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 28px;
+        align-items: end;
+        margin-bottom: 26px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 112px;
+        line-height: 0.86;
+        letter-spacing: 0;
+        font-weight: 900;
+      }
+
+      .subtitle {
+        max-width: 620px;
+        margin: 24px 0 0;
+        font: 23px/1.35 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      }
+
+      .tagline {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        align-items: center;
+        font: 18px/1 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-weight: 800;
+      }
+
+      .tagline span {
+        border-bottom: 4px solid var(--amber);
+        padding-bottom: 6px;
+      }
+
+      .badges {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 26px;
+      }
+
+      .badge {
+        border: 1px solid var(--ink);
+        background: var(--ink);
+        color: #fff;
+        min-height: 40px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font: 13px/1.1 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-weight: 800;
+      }
+
+      .section {
+        margin-top: 24px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 12px;
+        font: 20px/1 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+
+      .section-title::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: var(--line);
+      }
+
+      .panel {
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 420px;
+        gap: 24px;
+        padding: 26px;
+      }
+
+      .about-copy {
+        margin: 0;
+        font-size: 22px;
+        line-height: 1.38;
+      }
+
+      .focus-table {
+        display: grid;
+        border: 1px solid var(--line);
+        background: #fffdfa;
+      }
+
+      .focus-row {
+        display: grid;
+        grid-template-columns: 128px 1fr;
+        min-height: 54px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .focus-row:last-child {
+        border-bottom: 0;
+      }
+
+      .focus-row strong,
+      .focus-row span {
+        padding: 13px 16px;
+        font-size: 15px;
+        line-height: 1.25;
+      }
+
+      .focus-row strong {
+        border-right: 1px solid var(--line);
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      }
+
+      .stack {
+        padding: 8px 22px;
+      }
+
+      .stack-row {
+        display: grid;
+        grid-template-columns: 185px 1fr;
+        align-items: center;
+        min-height: 50px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .stack-row:last-child {
+        border-bottom: 0;
+      }
+
+      .stack-label {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font: 16px/1 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-weight: 900;
+      }
+
+      .stack-icon {
+        width: 34px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        background: var(--mint);
+        font-size: 12px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        min-width: 54px;
+        background: var(--ink);
+        color: #fff;
+        border-radius: 4px;
+        padding: 8px 11px;
+        text-align: center;
+        font: 13px/1 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-weight: 800;
+      }
+
+      .activity {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 20px;
+        padding: 22px;
+      }
+
+      .identity {
+        display: grid;
+        gap: 16px;
+        align-content: start;
+      }
+
+      .identity h2 {
+        margin: 0;
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      .metric {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 18px;
+      }
+
+      .metric-mark {
+        width: 17px;
+        height: 17px;
+        background: var(--coral);
+      }
+
+      .chart-wrap {
+        position: relative;
+        min-height: 210px;
+      }
+
+      svg {
+        display: block;
+      }
+
+      .chart-caption {
+        position: absolute;
+        right: 6px;
+        top: 0;
+        font: 12px/1 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        color: var(--muted);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .stat-card {
+        padding: 18px;
+        min-height: 168px;
+        border-radius: 8px;
+        background: #fffefa;
+        border: 1px solid var(--line);
+      }
+
+      .stat-card h3 {
+        margin: 0 0 14px;
+        font: 17px/1 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-weight: 900;
+      }
+
+      .stat-line {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 18px;
+        margin: 9px 0;
+        font-size: 16px;
+      }
+
+      .language-card {
+        display: grid;
+        grid-template-columns: 1fr 110px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 8px 0;
+        font-size: 14px;
+      }
+
+      .swatch {
+        width: 12px;
+        height: 12px;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 18px;
+      }
+
+      .notes,
+      .contact {
+        padding: 24px;
+        min-height: 168px;
+      }
+
+      .notes ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .notes li {
+        position: relative;
+        padding-left: 18px;
+        margin: 12px 0;
+        font-size: 17px;
+      }
+
+      .notes li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        width: 6px;
+        height: 6px;
+        background: var(--mint);
+      }
+
+      .contact-table {
+        display: grid;
+        border: 1px solid var(--line);
+        background: #fffefa;
+      }
+
+      .contact-row {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .contact-row:last-child {
+        border-bottom: 0;
+      }
+
+      .contact-row strong,
+      .contact-row span {
+        padding: 12px 16px;
+        font-size: 16px;
+      }
+
+      .contact-row strong {
+        border-right: 1px solid var(--line);
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="profile-canvas" aria-label="holic512 GitHub profile overview">
+      <div class="masthead">
+        <div class="rule"></div>
+        <div class="monogram">HOLIC512</div>
+        <div class="rule"></div>
+      </div>
+
+      <section class="hero">
+        <div>
+          <h1 data-text="profile.displayName">holic512</h1>
+          <p class="subtitle" data-text="profile.subtitle"></p>
+        </div>
+        <div class="tagline" data-list="tagline"></div>
+      </section>
+
+      <section class="badges" data-list="badges"></section>
+
+      <section class="section">
+        <div class="section-title">ABOUT</div>
+        <div class="panel about-grid">
+          <p class="about-copy" data-list="about"></p>
+          <div class="focus-table" data-list="focus"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">TECH STACK</div>
+        <div class="panel stack" data-list="techStack"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">GITHUB ACTIVITY</div>
+        <div class="panel activity">
+          <div class="identity">
+            <h2 data-text="activityTitle"></h2>
+            <div class="metric"><span class="metric-mark"></span><span data-text="contributions"></span></div>
+            <div class="metric"><span class="metric-mark" style="background: var(--amber)"></span><span data-text="publicRepos"></span></div>
+            <div class="metric"><span class="metric-mark" style="background: var(--steel)"></span><span data-text="joined"></span></div>
+          </div>
+          <div>
+            <div class="chart-wrap">
+              <div class="chart-caption">contributions in the last year</div>
+              <svg id="contributionChart" width="620" height="220" viewBox="0 0 620 220" role="img"></svg>
+            </div>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card" data-list="stats"></div>
+          <div class="stat-card language-card" data-list="repoLanguages"></div>
+          <div class="stat-card language-card" data-list="commitLanguages"></div>
+        </div>
+      </section>
+
+      <section class="section footer-grid">
+        <div class="panel notes">
+          <div class="section-title">ENGINEERING NOTES</div>
+          <ul data-list="notes"></ul>
+        </div>
+        <div class="panel contact">
+          <div class="section-title">CONTACT</div>
+          <div class="contact-table" data-list="contacts"></div>
+        </div>
+      </section>
+    </main>
+
+    <script id="profile-data" type="application/json">__PROFILE_DATA__</script>
+    <script>
+      const data = JSON.parse(document.getElementById("profile-data").textContent);
+      const colors = ["#151515", "#1f8a70", "#c57c21", "#c44d3f", "#426a75"];
+      const github = data.dynamic.github;
+      const text = (selector, value) => {
+        document.querySelector(`[data-text="${selector}"]`).textContent = value;
+      };
+
+      text("profile.displayName", data.profile.displayName);
+      text("profile.subtitle", data.profile.subtitle);
+      text("activityTitle", `${data.profile.username} (${data.profile.displayName})`);
+      text("contributions", `${github.contributions} Contributions in ${github.year}`);
+      text("publicRepos", `${github.publicRepos} Public Repos`);
+      text("joined", `Joined GitHub ${github.joinedYears} years ago`);
+
+      document.querySelector('[data-list="tagline"]').innerHTML = data.profile.tagline
+        .split(".")
+        .map((item) => item.trim())
+        .filter(Boolean)
+        .map((item) => `<span>${item}</span>`)
+        .join("");
+
+      document.querySelector('[data-list="badges"]').innerHTML = [
+        ["GitHub", data.profile.username],
+        ["Bilibili", "holic512"],
+        ["QQ", "2423580694"],
+        ["Profile views", data.dynamic.profileViews || "待确认"]
+      ].map(([label, value]) => `<div class="badge"><span>${label}</span><span>${value}</span></div>`).join("");
+
+      document.querySelector('[data-list="about"]').innerHTML = data.about.join("<br><br>");
+      document.querySelector('[data-list="focus"]').innerHTML = data.focus
+        .map((item) => `<div class="focus-row"><strong>${item.label}</strong><span>${item.value}</span></div>`)
+        .join("");
+
+      document.querySelector('[data-list="techStack"]').innerHTML = data.techStack
+        .map((group) => `
+          <div class="stack-row">
+            <div class="stack-label"><span class="stack-icon">${group.icon}</span>${group.label}</div>
+            <div class="chips">${group.items.map((item) => `<span class="chip">${item}</span>`).join("")}</div>
+          </div>
+        `)
+        .join("");
+
+      document.querySelector('[data-list="stats"]').innerHTML = `
+        <h3>Stats</h3>
+        ${[
+          ["Total Stars", github.stars],
+          [`${github.year} Commits`, github.yearCommits],
+          ["Total PRs", github.pullRequests],
+          ["Total Issues", github.issues],
+          ["Contributed to", github.contributedTo]
+        ].map(([label, value]) => `<div class="stat-line"><span>${label}</span><strong>${value}</strong></div>`).join("")}
+      `;
+
+      const languageBlock = (title, languages) => `
+        <div>
+          <h3>${title}</h3>
+          ${languages.map((item, index) => `
+            <div class="legend-item"><span class="swatch" style="background:${colors[index]}"></span>${item.name}</div>
+          `).join("")}
+        </div>
+        ${donut(languages)}
+      `;
+
+      document.querySelector('[data-list="repoLanguages"]').innerHTML = languageBlock("Top Languages by Repo", github.repoLanguages);
+      document.querySelector('[data-list="commitLanguages"]').innerHTML = languageBlock("Top Languages by Commit", github.commitLanguages);
+      document.querySelector('[data-list="notes"]').innerHTML = data.notes.map((item) => `<li>${item}</li>`).join("");
+      document.querySelector('[data-list="contacts"]').innerHTML = data.profile.contacts
+        .map((item) => `<div class="contact-row"><strong>${item.label}</strong><span>${item.value}</span></div>`)
+        .join("");
+
+      function donut(items) {
+        const total = items.reduce((sum, item) => sum + Math.max(0, Number(item.value) || 0), 0) || items.length || 1;
+        let offset = 0;
+        const rings = items.map((item, index) => {
+          const value = total === items.length && !item.value ? 1 : Math.max(0, Number(item.value) || 0);
+          const segment = 320 * value / total;
+          const circle = `<circle r="51" fill="none" stroke="${colors[index]}" stroke-width="24" stroke-dasharray="${segment} ${320 - segment}" stroke-dashoffset="${-offset}" />`;
+          offset += segment;
+          return circle;
+        }).join("");
+        return `<svg width="112" height="112" viewBox="-56 -56 112 112">${rings}<circle r="26" fill="#fffefa"/></svg>`;
+      }
+
+      function renderChart() {
+        const svg = document.getElementById("contributionChart");
+        const days = Array.isArray(github.calendarDays) ? github.calendarDays : [];
+        const counts = days.map((day) => Number(day.count) || 0);
+        const maxCount = Math.max(10, ...counts);
+        const x0 = 20;
+        const x1 = 580;
+        const y0 = 185;
+        const y1 = 34;
+        const span = Math.max(1, counts.length - 1);
+        const points = counts.map((count, index) => {
+          const x = x0 + (x1 - x0) * index / span;
+          const y = y0 - (y0 - y1) * count / maxCount;
+          return [x, y];
+        });
+        const line = points.length
+          ? `M${points[0][0].toFixed(1)} ${points[0][1].toFixed(1)} ` + points.map(([x, y]) => `L${x.toFixed(1)} ${y.toFixed(1)}`).join(" ")
+          : `M${x0} ${y0} L${x1} ${y0}`;
+        const area = points.length
+          ? `M${x0} ${y0} L${points[0][0].toFixed(1)} ${points[0][1].toFixed(1)} ${points.map(([x, y]) => `L${x.toFixed(1)} ${y.toFixed(1)}`).join(" ")} L${x1} ${y0} Z`
+          : `M${x0} ${y0} L${x1} ${y0} L${x1} ${y0 + 1} L${x0} ${y0 + 1} Z`;
+        const ticks = days.length
+          ? [0, 1, 2, 3, 4, 5].map((ratio) => days[Math.round((days.length - 1) * ratio / 5)]?.date?.slice(2, 7).replace("-", "/") || "")
+          : ["", "", "", "", "", ""];
+        svg.innerHTML = `
+          <line x1="${x0}" y1="70" x2="${x1}" y2="70" stroke="#d8d2c5" stroke-dasharray="5 6"/>
+          <line x1="${x0}" y1="115" x2="${x1}" y2="115" stroke="#d8d2c5" stroke-dasharray="5 6"/>
+          <line x1="${x0}" y1="160" x2="${x1}" y2="160" stroke="#d8d2c5" stroke-dasharray="5 6"/>
+          <path d="${area}" fill="#1f8a70" opacity="0.9"/>
+          <path d="${line}" fill="none" stroke="#151515" stroke-width="3"/>
+          <line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y0}" stroke="#151515"/>
+          ${ticks.map((tick, index) => `<text x="${x0 + (x1 - x0) * index / 5}" y="210" font-family="ui-monospace, monospace" font-size="11" fill="#5b5b55">${tick}</text>`).join("")}
+          ${days.length ? "" : `<text x="218" y="126" font-family="ui-monospace, monospace" font-size="14" fill="#5b5b55">awaiting live contribution calendar</text>`}
+        `;
+      }
+
+      renderChart();
+    </script>
+  </body>
+</html>
