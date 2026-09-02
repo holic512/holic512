@@ -2,8 +2,8 @@
   "profile": {
     "username": "holic512",
     "displayName": "holic512",
-    "subtitle": "Software engineering, full-stack development, and practical automation.",
-    "tagline": "Clean code. Clear systems. Useful tools.",
+    "subtitle": "软件工程 · 全栈开发 · 自动化实践\nSoftware Engineering · Full-stack Development · Practical Automation.",
+    "tagline": "清晰代码 / Clean code. 清晰系统 / Clear systems. 实用工具 / Useful tools.",
     "contacts": [
       {
         "label": "GitHub",
@@ -20,26 +20,25 @@
     ]
   },
   "about": [
-    "I use this profile to track programming practice, project experiments, and engineering notes.",
-    "My current public stack centers on web development, backend fundamentals, automation scripts, and course/project implementations."
+    "这里记录我的编程练习、项目实验与工程笔记；目前聚焦 Web 开发、后端基础和自动化实践。<br><span class=\"translation\">A home for programming practice, project experiments, and engineering notes—currently focused on web, backend, and automation.</span>"
   ],
   "focus": [
     {
-      "label": "Focus",
-      "value": "Full-stack development, backend services, automation, and software engineering practice."
+      "label": "方向 / Focus",
+      "value": "全栈 · 后端 · 自动化<br><span class=\"translation\">Full stack · Backend · Automation</span>"
     },
     {
-      "label": "Working style",
-      "value": "Readable structure, explicit naming, small iterations, and verifiable results."
+      "label": "风格 / Style",
+      "value": "结构清晰，命名明确，快速迭代。<br><span class=\"translation\">Readable, explicit, iterative.</span>"
     },
     {
-      "label": "Profile pipeline",
-      "value": "JSON data, HTML layout, Playwright screenshot, README image."
+      "label": "管线 / Pipeline",
+      "value": "JSON → HTML → Playwright → PNG → README"
     }
   ],
   "techStack": [
     {
-      "label": "Languages",
+      "label": "语言 / Languages",
       "icon": "</>",
       "items": [
         "Python",
@@ -51,7 +50,7 @@
       ]
     },
     {
-      "label": "Frontend",
+      "label": "前端 / Frontend",
       "icon": "UI",
       "items": [
         "HTML5",
@@ -63,7 +62,7 @@
       ]
     },
     {
-      "label": "Tools & Platform",
+      "label": "工具 / Tools",
       "icon": "CLI",
       "items": [
         "Git",

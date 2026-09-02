@@ -13,7 +13,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>holic512 GitHub profile overview</title>
+    <title>holic512 · 个人主页 / GitHub Profile</title>
     <style>
       :root {
         --ink: #151515;
@@ -36,7 +36,7 @@
         margin: 0;
         background: var(--paper);
         color: var(--ink);
-        font-family: Georgia, "Times New Roman", serif;
+        font-family: "Songti SC", "STSong", Georgia, "Times New Roman", serif;
       }
 
       .profile-canvas {
@@ -93,6 +93,7 @@
         max-width: 620px;
         margin: 24px 0 0;
         font: 23px/1.35 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        white-space: pre-line;
       }
 
       .tagline {
@@ -100,7 +101,8 @@
         gap: 12px;
         justify-content: flex-end;
         align-items: center;
-        font: 18px/1 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        flex-wrap: wrap;
+        font: 16px/1.15 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
         font-weight: 800;
       }
 
@@ -167,8 +169,13 @@
 
       .about-copy {
         margin: 0;
-        font-size: 22px;
+        font-size: 20px;
         line-height: 1.38;
+      }
+
+      .translation {
+        color: var(--muted);
+        font-size: 0.82em;
       }
 
       .focus-table {
@@ -191,7 +198,7 @@
       .focus-row strong,
       .focus-row span {
         padding: 13px 16px;
-        font-size: 15px;
+        font-size: 14px;
         line-height: 1.25;
       }
 
@@ -413,7 +420,7 @@
     </style>
   </head>
   <body>
-    <main class="profile-canvas" aria-label="holic512 GitHub profile overview">
+    <main class="profile-canvas" aria-label="holic512 的中英双语 GitHub 个人主页概览">
       <div class="masthead">
         <div class="rule"></div>
         <div class="monogram">HOLIC512</div>
@@ -431,7 +438,7 @@
       <section class="badges" data-list="badges"></section>
 
       <section class="section">
-        <div class="section-title">ABOUT</div>
+        <div class="section-title">ABOUT / 关于我</div>
         <div class="panel about-grid">
           <p class="about-copy" data-list="about"></p>
           <div class="focus-table" data-list="focus"></div>
@@ -439,12 +446,12 @@
       </section>
 
       <section class="section">
-        <div class="section-title">TECH STACK</div>
+        <div class="section-title">TECH STACK / 技术栈</div>
         <div class="panel stack" data-list="techStack"></div>
       </section>
 
       <section class="section">
-        <div class="section-title">GITHUB ACTIVITY</div>
+        <div class="section-title">GITHUB ACTIVITY / 活动</div>
         <div class="panel activity">
           <div class="identity">
             <h2 data-text="activityTitle"></h2>
@@ -454,7 +461,7 @@
           </div>
           <div>
             <div class="chart-wrap">
-              <div class="chart-caption">contributions in the last year</div>
+              <div class="chart-caption">过去一年贡献 / last-year contributions</div>
               <svg id="contributionChart" width="620" height="220" viewBox="0 0 620 220" role="img"></svg>
             </div>
           </div>
@@ -468,11 +475,11 @@
 
       <section class="section footer-grid">
         <div class="panel notes">
-          <div class="section-title">ENGINEERING NOTES</div>
+          <div class="section-title">ENGINEERING NOTES / 笔记</div>
           <ul data-list="notes"></ul>
         </div>
         <div class="panel contact">
-          <div class="section-title">CONTACT</div>
+          <div class="section-title">CONTACT / 联系</div>
           <div class="contact-table" data-list="contacts"></div>
         </div>
       </section>
@@ -489,10 +496,10 @@
 
       text("profile.displayName", data.profile.displayName);
       text("profile.subtitle", data.profile.subtitle);
-      text("activityTitle", `${data.profile.username} (${data.profile.displayName})`);
-      text("contributions", `${github.contributions} Contributions in ${github.year}`);
-      text("publicRepos", `${github.publicRepos} Public Repos`);
-      text("joined", `Joined GitHub ${github.joinedYears} years ago`);
+      text("activityTitle", `${data.profile.username} · 主页活动 / Profile activity`);
+      text("contributions", `${github.year} 年贡献 / ${github.contributions} contributions`);
+      text("publicRepos", `公开仓库 / ${github.publicRepos} public repos`);
+      text("joined", `加入 GitHub / ${github.joinedYears} years ago`);
 
       document.querySelector('[data-list="tagline"]').innerHTML = data.profile.tagline
         .split(".")
@@ -502,10 +509,10 @@
         .join("");
 
       document.querySelector('[data-list="badges"]').innerHTML = [
-        ["GitHub", data.profile.username],
-        ["Bilibili", "holic512"],
-        ["QQ", "2423580694"],
-        ["Profile views", data.dynamic.profileViews || "待确认"]
+        ["GitHub / 代码", data.profile.username],
+        ["Bilibili / 视频", "holic512"],
+        ["QQ / 联系", "2423580694"],
+        ["访问 / Views", data.dynamic.profileViews || "待确认"]
       ].map(([label, value]) => `<div class="badge"><span>${label}</span><span>${value}</span></div>`).join("");
 
       document.querySelector('[data-list="about"]').innerHTML = data.about.join("<br><br>");
@@ -525,11 +532,11 @@
       document.querySelector('[data-list="stats"]').innerHTML = `
         <h3>Stats</h3>
         ${[
-          ["Total Stars", github.stars],
-          [`${github.year} Commits`, github.yearCommits],
-          ["Total PRs", github.pullRequests],
-          ["Total Issues", github.issues],
-          ["Contributed to", github.contributedTo]
+          ["Stars / 获星", github.stars],
+          ["Commits / 提交", github.yearCommits],
+          ["PRs / 拉取请求", github.pullRequests],
+          ["Issues / 议题", github.issues],
+          ["Contributed / 参与", github.contributedTo]
         ].map(([label, value]) => `<div class="stat-line"><span>${label}</span><strong>${value}</strong></div>`).join("")}
       `;
 
@@ -543,8 +550,8 @@
         ${donut(languages)}
       `;
 
-      document.querySelector('[data-list="repoLanguages"]').innerHTML = languageBlock("Top Languages by Repo", github.repoLanguages);
-      document.querySelector('[data-list="commitLanguages"]').innerHTML = languageBlock("Top Languages by Commit", github.commitLanguages);
+      document.querySelector('[data-list="repoLanguages"]').innerHTML = languageBlock("仓库语言 / Repos", github.repoLanguages);
+      document.querySelector('[data-list="commitLanguages"]').innerHTML = languageBlock("提交语言 / Commits", github.commitLanguages);
       document.querySelector('[data-list="notes"]').innerHTML = data.notes.map((item) => `<li>${item}</li>`).join("");
       document.querySelector('[data-list="contacts"]').innerHTML = data.profile.contacts
         .map((item) => `<div class="contact-row"><strong>${item.label}</strong><span>${item.value}</span></div>`)
