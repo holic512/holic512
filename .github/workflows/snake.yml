@@ -1,0 +1,46 @@
+# @file snake
+# @project holic512 GitHub Profile
+# @module GitHub Actions / Contribution snake
+# @description Generates light and dark contribution-snake assets on the output branch.
+# @logic 1. Generate the contribution animation; 2. Publish generated files to output; 3. Refresh daily and after profile updates.
+# @dependencies Actions: actions/checkout@v5, Platane/snk@v3, crazy-max/ghaction-github-pages@v3.1.0
+# @index_tags GitHub Profile, GitHub Actions, contribution snake, output branch
+# @author holic512
+
+name: Generate contribution snake
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - ".github/workflows/snake.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Generate contribution snake
+        uses: Platane/snk@v3
+        with:
+          github_user_name: holic512
+          outputs: |
+            dist/github-contribution-grid-snake.svg
+            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+
+      - name: Publish animation to output branch
+        uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="720" height="48" viewBox="0 0 720 48">
-  <line x1="0" y1="24" x2="285" y2="24" stroke="#d9d9d9" stroke-width="0.8"/>
-  <line x1="435" y1="24" x2="720" y2="24" stroke="#d9d9d9" stroke-width="0.8"/>
-  <circle cx="305" cy="24" r="2" fill="#000000"/>
-  <circle cx="415" cy="24" r="2" fill="#000000"/>
-  <text x="360" y="28" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="11" font-weight="700" fill="#000000" text-anchor="middle" letter-spacing="9">HOLIC512</text>
-</svg>

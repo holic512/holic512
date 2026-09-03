@@ -1,0 +1,60 @@
+# @file profile-3d
+# @project holic512 GitHub Profile
+# @module GitHub Actions / 3D contribution graph
+# @description Builds the 3D contribution graph and commits only the generated profile assets back to main.
+# @logic 1. Write the shared rainbow configuration; 2. Generate the graph for holic512; 3. Commit and push changed generated assets with GITHUB_TOKEN.
+# @dependencies Actions: actions/checkout@v5, yoshi389111/github-profile-3d-contrib@0.7.1
+# @index_tags GitHub Profile, GitHub Actions, 3D contribution graph, generated SVG
+# @author holic512
+
+name: Generate 3D contribution graph
+
+on:
+  schedule:
+    - cron: "0 18 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-3d-contrib-main
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Write graph settings
+        run: |
+          mkdir -p profile-3d-contrib
+          cat > profile-3d-contrib/settings.json << 'EOF'
+          {
+            "type": "rainbow",
+            "backgroundColor": "#0d1117",
+            "foregroundColor": "#dddddd",
+            "strongColor": "#ffffff",
+            "weakColor": "#888888",
+            "radarColor": "#7C3AED",
+            "growingAnimation": true,
+            "contribColors": ["#161b22", "#2D1B69", "#5B21B6", "#7C3AED", "#06B6D4"]
+          }
+          EOF
+
+      - name: Generate 3D contribution graph
+        uses: yoshi389111/github-profile-3d-contrib@0.7.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: holic512
+
+      - name: Commit generated graph
+        run: |
+          git add profile-3d-contrib
+          git diff --cached --quiet && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "[chore] [1.更新 3D 贡献图资源。]"
+          git push
